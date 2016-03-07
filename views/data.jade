@@ -1,0 +1,6 @@
+extends layout
+
+block content
+  ul
+    each item in result
+        li= item.room + ': ' + item.temperature
