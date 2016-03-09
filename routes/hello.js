@@ -2,7 +2,10 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function(req, res){
-    var outputName = req.param('name') + "!";
+    var outputName = "stranger!";
+    if(req.param('name') != null){
+        outputName = req.param('name') + "!";
+    }
     res.render('hello', { name: outputName });
 });
 
