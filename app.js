@@ -5,22 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var postData = require('./routes/data');
-var hello = require('./routes/hello');
+var setupRoutes = require('./routes/routes.js');
 
-/*var sqlite3 = require('sqlite3').verbose();
-var fs = require('fs');
-var file = "test.db";
-var exists = fs.existsSync(file);
-var db = new sqlite3.Database(file);
-var tableName = "temperatures";
-db.serialize(function(){
-        var query = "CREATE TABLE if not exists " + tableName + "(id INTEGER PRIMARY KEY, room TEXT, temperature REAL);";
-        db.run(query);
-});*/
 var dbManager = require('./db_manager.js');
+
+// Create tables if they don't exist
 dbManager.createTable("temperature");
 
 var app = express();
@@ -38,10 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // setup routes
-app.use('/', routes);
-app.use('/users', users);
-app.use('/hello', hello);
-app.use('/data', postData);
+setupRoutes(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -73,6 +59,7 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
 
 
 module.exports = app;
